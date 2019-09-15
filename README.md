@@ -1,10 +1,33 @@
 docker-swift
 ============
+This is a fork from [bouncestorage/docker-swift](https://github.com/bouncestorage/docker-swift) with several tweaks to setup a development environment where you can modify and run tests on code
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/bouncestorage/swift-aio.svg)](https://hub.docker.com/r/bouncestorage/swift-aio/)
-[![](https://images.microbadger.com/badges/image/bouncestorage/swift-aio.svg)](https://microbadger.com/images/bouncestorage/swift-aio)
+# Usage
 
-Docker image for Swift all-in-one demo deployment
+First you need to copy or clone openstack/swift
+```
+git clone https://github.com/openstack/swift.git
+```
+
+Then build up the image
+```
+docker build -t swift-aio
+```
+
+Attach the code base when running
+```
+docker run -v `pwd`/swift:/usr/local/src/swift -P -t swift-aio
+```
+
+If you made any changes in swift just run the swift setup again in the container
+
+Testing with python-swift client
+```
+source tempauth.env
+swift stat
+```
+
+# Original usage
 
 This is an attempt to dockerize the instructions for a [Swift All-in-one deployment](https://docs.openstack.org/swift/latest/development_saio.html).
 

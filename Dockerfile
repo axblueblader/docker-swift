@@ -21,24 +21,26 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         rsync \
         sqlite3 \
         sudo \
-        xfsprogs && \
+        xfsprogs \
+	vim \
+	python-dev python3-dev \
+	build-essential \
+	gcc man \
+	libssl-dev libffi-dev liberasurecode-dev libxml2-dev libxslt1-dev && \
     DEBIAN_FRONTEND=noninteractive apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install --upgrade pip setuptools pytz
+    pip install --upgrade pip setuptools pytz tox
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     apt-get install -y --no-install-recommends git-core && \
-    git clone --branch 3.7.0 --single-branch --depth 1 https://github.com/openstack/python-swiftclient.git /usr/local/src/python-swiftclient && \
-    cd /usr/local/src/python-swiftclient && python setup.py develop && \
-    git clone --branch 2.21.0 --single-branch --depth 1 https://github.com/openstack/swift.git /usr/local/src/swift && \
-    cd /usr/local/src/swift && python setup.py develop && \
-    apt-get remove -y --purge git-core git && \
-    apt-get autoremove -y --purge && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    git clone --branch 3.5.0 --single-branch --depth 1 https://github.com/openstack/python-swiftclient.git /usr/local/src/python-swiftclient && \
+    cd /usr/local/src/python-swiftclient && python setup.py develop
+
+COPY ./swift /usr/local/src/swift
+RUN cd /usr/local/src/swift && python setup.py develop
 
 
-COPY ./swift /etc/swift
+COPY ./swift-conf /etc/swift
 COPY ./misc/rsyncd.conf /etc/
 COPY ./bin /swift/bin
 COPY ./misc/bashrc /swift/.bashrc
