@@ -4,7 +4,7 @@ This is a fork from [bouncestorage/docker-swift](https://github.com/bouncestorag
 
 # Usage
 
-First you need to copy or clone openstack/swift
+First you need to copy or clone openstack/swift inside the folder
 ```
 git clone https://github.com/openstack/swift.git
 ```
